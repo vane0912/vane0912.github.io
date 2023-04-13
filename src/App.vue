@@ -5,18 +5,26 @@
         </div>
         <div class="header-text">
            <h1 class="white-letters">Search your city here</h1>
-           <inputComponent/>
+           <input v-model="city" class="input-styling" type="text">
            <button @click="showAnimation()" class="button-styling">Search</button>
         </div>
     </header>
 </template>
 
 <script>
-  import inputComponent from '@/components/input-component.vue'
   export default{
-    components: {inputComponent},
+    data(){
+      return{
+        city: ''
+      }
+    },  
     methods:{
       showAnimation(){
+        const userCity = this.city
+        fetch(`https://goweather.herokuapp.com/weather/${userCity}`)
+        .then(res => res.json())
+        .then(data => console.log(data.temperature))
+        
         this.$refs.addAnimation.classList.add("header-animation")
       }
     }
@@ -35,6 +43,10 @@
     height: 100vh;
     background-color: #1282A2;
   }
+  .input-styling{
+        width: 75%;
+        @include global-mixins.inputAndButtonStyles;
+    }
   .align-header{
     display: flex;
     justify-content: space-evenly;
