@@ -1,5 +1,17 @@
-@mixin inputAndButtonStyles(){
-    border: solid 2px #FEFCFB;;
-    background-color: #1282A2;
-    color: #FEFCFB;
+@mixin heightAndWidth($height: 100vh, $width: 100vw, $backgroundC: #F0F7F4){
+   height: $height;
+   width: $width; 
+   background-color: $backgroundC;
+}
+@mixin positionDisplay($justify: center,$direction: column,$alignment:center){
+    display: flex;
+    justify-content: $justify;
+    flex-direction: $direction;
+    align-items: $alignment;
+}
+@mixin fontStyling($weight: 400, $color: #FEFCFB, $size: 20px){
+    font-family: 'Montserrat', sans-serif;
+    font-size: $size;
+    color: $color;
+    font-weight: $weight;
 }
