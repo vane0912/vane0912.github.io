@@ -1,35 +1,51 @@
 <template>
   <main class="align-homepage">
-      <div class="homepage-text">
-          <h1 class="h1-styling">Get the latest weather <img class="image-size" alt="cloudy sun" src="@/assets/icons/cloudy.png"> results</h1>
-          <div class="wrap-BandI">
-            <cityInput/>
-            <searchButton class="adjust-to-input"/>
-          </div>
+    <div class="homepage-text">
+      <h1 class="h1-styling">Get the latest weather <img class="image-size" alt="cloudy sun" src="@/assets/icons/cloudy.png">results</h1>
+      <div class="wrap-BandI">
+        <cityInput v-model="city"/>
+        <div class="allCities">
+          <ul>
+            <li v-for="cities in filterCity">{{ cities }}</li>
+          </ul>
+        </div>
+        <searchButton :to="{name: 'about'}" @searchCountry="weatherResult()" class="adjust-to-input"/>
       </div>
-      <div class="background-homepage">
-        <img class="cards" alt="weather design example" src="@/assets/background-images/weather-cards.svg">
-      </div>
+    </div>
+    <div class="background-homepage">
+      <img class="cards" alt="weather design example" src="@/assets/background-images/weather-cards.svg">
+    </div>
   </main>
 </template>
 
 <script>
 import searchButton from '@/components/button-component.vue';
-import cityInput from '@/components/input-component.vue';
+import cityInput from '@/components/inputCity-component.vue';
 export default{
   components: {searchButton, cityInput},
   data(){
     return{
-      city: ''
+      city: '',
+      citiesApi: [],
     }
-  },  
+  },
+  computed:{
+    filterCity(){
+      fetch('https://countriesnow.space/api/v0.1/countries/population/cities')
+      .then(response => response.json())
+      .then(data => this.citiesApi = data.data)
+      if(this.city.length > 0){
+        const toLc = this.citiesApi.map(value => value.city.toLowerCase())
+        return toLc.filter(value => value.includes(this.city.toLowerCase()))
+      }
+    }
+  },
   methods:{
-    showAnimation(){
-      const userCity = this.city
-      fetch(`https://goweather.herokuapp.com/weather/${userCity}`)
-      .then(res => res.json())
-      .then(data => console.log(data.temperature))
-    }
+    weatherResult(){
+      const userCity = this.city;
+      this.$route.params.id = userCity;
+      this.$router.push({name:'about'})
+    },
   }
 }
 </script>
@@ -70,6 +86,11 @@ body, html, #app, main{
 .wrap-BandI{
   @include global-mixins.heightAndWidth(10vh, 40vw);
   @include global-mixins.positionDisplay(flex-start, row, center);
+}
+.allCities{
+  @include global-mixins.heightAndWidth(20vh, 20vw, #23395B);
+  @include global-mixins.fontStyling(100, #F0F7F4, 20px);
+  overflow: scroll;
 }
 @keyframes moveBackground{
   from{

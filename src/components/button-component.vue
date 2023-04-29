@@ -1,5 +1,5 @@
 <template>
-    <button class="button-styling">Search</button>
+    <button @click="$emit('searchCountry')" class="button-styling">Search</button>
 </template>
 <style lang="scss">
 @use '@/assets/global-mixins.scss';
