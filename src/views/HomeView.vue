@@ -1,15 +1,15 @@
 <template>
   <main class="align-homepage">
     <div class="homepage-text">
-      <h1 class="h1-styling">Get the latest weather <img class="image-size" alt="cloudy sun" src="@/assets/icons/cloudy.png">results</h1>
+      <h1 class="h1-blue-styling">Get the latest weather <img class="image-size" alt="cloudy sun" src="@/assets/icons/cloudy.png">results</h1>
       <div class="wrap-BandI">
         <cityInput v-model="city"/>
-        <div class="allCities">
-          <ul>
-            <li v-for="cities in filterCity">{{ cities }}</li>
-          </ul>
-        </div>
         <searchButton :to="{name: 'about'}" @searchCountry="weatherResult()" class="adjust-to-input"/>
+      </div>
+      <div style="display: none;" class="allCities">
+        <ul>
+          <li v-for="cities in filterCity">{{ cities }}</li>
+        </ul>
       </div>
     </div>
     <div class="background-homepage">
@@ -31,11 +31,11 @@ export default{
   },
   computed:{
     filterCity(){
-      fetch('https://countriesnow.space/api/v0.1/countries/population/cities')
+      fetch('https://countriesnow.space/api/v0.1/countries')
       .then(response => response.json())
       .then(data => this.citiesApi = data.data)
       if(this.city.length > 0){
-        const toLc = this.citiesApi.map(value => value.city.toLowerCase())
+        const toLc = this.citiesApi.map(value => value.country.toLowerCase())
         return toLc.filter(value => value.includes(this.city.toLowerCase()))
       }
     }
@@ -57,9 +57,6 @@ body, html, #app, main{
   @include global-mixins.heightAndWidth(100%, 100, #F0F7F4);
   margin: 0;
 }
-.h1-styling{
-  @include global-mixins.fontStyling(800, #23395B, 80px);
-}
 .homepage-text{
   @include global-mixins.heightAndWidth(90vh, 45vw);
   @include global-mixins.positionDisplay(center, column, flex-start)
@@ -77,67 +74,57 @@ body, html, #app, main{
   animation: moveBackground 30s infinite alternate;
 }
 .cards{
-  @include global-mixins.heightAndWidth(80%, 70%, transparent);
+  @include global-mixins.clamp(29rem, 90%, 80rem, 40rem, 100%, 80rem, transparent,);
 }
 .adjust-to-input{
   position: relative;
   right: 2%;
 }
 .wrap-BandI{
-  @include global-mixins.heightAndWidth(10vh, 40vw);
+  @include global-mixins.heightAndWidth(10%, 100%, transparent);
   @include global-mixins.positionDisplay(flex-start, row, center);
 }
 .allCities{
-  @include global-mixins.heightAndWidth(20vh, 20vw, #23395B);
+  @include global-mixins.heightAndWidth(20vh, 37vw, #23395B);
   @include global-mixins.fontStyling(100, #F0F7F4, 20px);
+  border-radius: 5px;
   overflow: scroll;
 }
 @keyframes moveBackground{
   from{
-    background-image: url("@/assets/background-images/cloudy-sky.jpg");
-    background-position: 0% 100%;
-    background-size: 100vw 100%;
+    @include global-mixins.backgroundimg(url("@/assets/background-images/cloudy-sky.jpg"), 100vw 100%);
+    background-position: 0%;
   }
   to{
-    background-image: url("@/assets/background-images/cloudy-sky.jpg");
-    position: relative;
-    background-position: 100% 100%;
-    background-size: 100vw 100%;
+    @include global-mixins.backgroundimg(url("@/assets/background-images/cloudy-sky.jpg"), 100vw 100%);
+    background-position: 100%;
   }
 }
 @keyframes moveBackgroundmobile{
   from{
-    background-image: url("@/assets/background-images/cloudy-sky.jpg");
-    background-position: 0% 100%;
-    background-size: 1000px 100vh;
+    @include global-mixins.backgroundimg(url("@/assets/background-images/cloudy-sky.jpg"), 1000px 100vh);
+    background-position: 0%;
   }
   to{
-    background-image: url("@/assets/background-images/cloudy-sky.jpg");
-    position: relative;
-    background-position: 100% 100%;
-    background-size: 1000px 100vh;
+    @include global-mixins.backgroundimg(url("@/assets/background-images/cloudy-sky.jpg"), 1000px 100vh);
+    background-position: 100%;
   }
 }
-@media screen and (min-width: 2560px){
-  .wrap-BandI{
-      @include global-mixins.heightAndWidth(8%, 100%, transparent);
-  }
-}
-@media screen and (max-width: 900px) {
-    main{
-      @include global-mixins.heightAndWidth(100vh, 100vw);
+@media screen and (max-width: 921px) {
+    .align-homepage{
+      @include global-mixins.heightAndWidth(100%, 100%);
       animation: moveBackgroundmobile 30s infinite alternate;
     }
     .cards, .background-homepage{
       display: none;
     }
     .homepage-text{
-      @include global-mixins.heightAndWidth(80vh, 80vw);
+      @include global-mixins.heightAndWidth(80%, 80%);
       @include global-mixins.positionDisplay(center, column, center);
       padding: 5%;
       border-radius: 17px;
     }
-    .h1-styling{
+    .h1-blue-styling{
       @include global-mixins.fontStyling(800, #23395B, 55px);
       text-align: center;
       margin: 10% 0%;

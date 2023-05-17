@@ -3,6 +3,11 @@
    width: $width; 
    background-color: $backgroundC;
 }
+@mixin clamp($minW: 5rem, $actualW: 100%, $maxW: 5rem, $minH: 5rem, $actualH: 100%, $maxH: 5rem, $backgroundC: #23395B){
+    height: clamp($minH, $actualH, $maxH);
+    width: clamp($minW, $actualW, $maxW);
+    background-color: $backgroundC;
+}
 @mixin positionDisplay($justify: center,$direction: column,$alignment:center){
     display: flex;
     justify-content: $justify;
@@ -14,4 +19,34 @@
     font-size: $size;
     color: $color;
     font-weight: $weight;
+}
+@mixin backgroundimg($url: url('@/assets/background-images/Sunny.jpg'), $size: 100% 100%){
+    background-image: $url;
+    background-size: $size;
+}
+.h1-blue-styling{
+    @include fontStyling(800, #23395B, 80px);
+}
+.h2-white-styling{
+    @include fontStyling(600, #FEFCFB, 50px);
+    margin: 3% 0%;
+}
+.h3-blue-styling{
+    @include fontStyling(600, #23395B, 36px);
+    margin: 5px;
+}
+.h4-white-styling{
+    @include fontStyling(500, #FEFCFB, 36px);
+    margin: 5px;
+}
+.h3-white-styling{
+    @include fontStyling(600, #FEFCFB, 36px);
+    margin: 5px;
+}
+.p-white-styling{
+    @include fontStyling(400, #FEFCFB, 36px);
+}
+.p-blue-styling{
+    @include fontStyling(400, #23395B, 30px);
+    margin: 5px;
 }

@@ -1,6 +1,6 @@
 <template>
     <input class="input-styling"
-     placeholder="Search your country" 
+     placeholder="Search your state" 
      type="text"
      :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)">
@@ -14,9 +14,8 @@ export default{
 <style lang="scss">
 @use '@/assets/global-mixins.scss';
 .input-styling{
-    @include global-mixins.heightAndWidth(80%, 60%, #23395B);
+    @include global-mixins.clamp(13rem, 100%, 60rem, 4rem, 100%, 4rem, #23395B,);
     @include global-mixins.fontStyling(200, #F0F7F4, 20px);
-    padding: 0px 15px;
     border-radius: 5px;
     border: none;
     text-align: center;
