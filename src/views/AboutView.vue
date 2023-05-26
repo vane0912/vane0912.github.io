@@ -1,9 +1,8 @@
 <template>
   <main>
     <div class="align-column">
-      <div class="temp-input">
+      <div class="about-input">
         <cityInput/>
-        <searchButton class="adjust-button"/>
       </div>
       <div class="weather-card">
         <div class="icon-description">
@@ -42,10 +41,9 @@
   </main>
 </template>
 <script >
-import searchButton from '@/components/button-component.vue';
 import cityInput from '@/components/inputCity-component.vue';
   export default{
-    components:{searchButton, cityInput},
+    components:{cityInput},
     data(){
       return{
         userInput: "",
@@ -77,10 +75,16 @@ import cityInput from '@/components/inputCity-component.vue';
 <style lang="scss">
 @use '@/assets/global-mixins.scss';
   .align-column{
-    @include global-mixins.clamp(300px, 100%, 1400px, 700px, 100%, 900px, transparent);
-    @include global-mixins.positionDisplay(); 
+    @include global-mixins.minMax(100%, 1400px, 100%, 900px, transparent);
+    @include global-mixins.positionDisplay(center, column, center); 
     padding: 0%;
     margin: auto;
+  }
+  .about-input{
+    @include global-mixins.heightAndWidth(10%, 85%, transparent);
+    position: relative;
+    bottom: 0%
+
   }
   .weather-card{
     @include global-mixins.heightAndWidth(25%, 85%, #FF9F1C);
@@ -105,14 +109,6 @@ import cityInput from '@/components/inputCity-component.vue';
     @include global-mixins.heightAndWidth(100%, 70%, transparent);
     margin: 0% 5%;
     text-align: left;
-  }
-  .temp-input{
-    @include global-mixins.heightAndWidth(10%, 88%, transparent);
-    @include global-mixins.positionDisplay(center, row, center);
-  }
-  .adjust-button{
-    position: relative;
-    right: 1%;
   }
   .forecasts{
     @include global-mixins.heightAndWidth(45%, 87%, #23395B);

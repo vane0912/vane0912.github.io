@@ -3,9 +3,11 @@
    width: $width; 
    background-color: $backgroundC;
 }
-@mixin clamp($minW: 5rem, $actualW: 100%, $maxW: 5rem, $minH: 5rem, $actualH: 100%, $maxH: 5rem, $backgroundC: #23395B){
-    height: clamp($minH, $actualH, $maxH);
-    width: clamp($minW, $actualW, $maxW);
+@mixin minMax($actualW: 100%, $maxW: 5rem, $actualH: 100%, $maxH: 5rem, $backgroundC: #23395B){
+    max-width: $maxW;
+    max-height: $maxH;
+    height: $actualH;
+    width: $actualW;
     background-color: $backgroundC;
 }
 @mixin positionDisplay($justify: center,$direction: column,$alignment:center){
