@@ -7,7 +7,8 @@
           <h1 class="h1-blue-styling">Get the latest weather results</h1>
         </div>
         <h1 class="h1-blue-styling image-h1-desktop">Get the latest weather <img class="image-size" alt="cloudy sun" src="@/assets/icons/cloudy.png">results</h1>
-        <cityInput/>
+        <cityInput 
+        />
       </div>
       <div class="background-homepage">
         <img class="cards" alt="weather design example" src="@/assets/background-images/weather-cards.svg">
@@ -19,7 +20,12 @@
 <script>
 import cityInput from '@/components/inputCity-component.vue';
 export default{
-  components: {cityInput}
+  components: {cityInput},
+  data(){
+    return{
+      inputValue: "",
+    }
+  }
 }
 </script>
 

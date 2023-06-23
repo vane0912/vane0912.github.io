@@ -1,5 +1,9 @@
 <template>
   <main>
+    <div class="loading-page" v-if="loading">
+      <img class="image-size" alt="cloudy sun" src="@/assets/icons/cloudy.png">
+      <h3 class="h3-blue-styling">{{ loadingtxt }}</h3>
+    </div>
     <div class="align-column">
       <div class="about-input">
         <cityInput/>
@@ -54,26 +58,71 @@ import cityInput from '@/components/inputCity-component.vue';
         forecast1: "",
         forecast2: "",
         forecast3: "",
+        loading: true,
+        loadingtxt: "Loading",
       }
     },
-    beforeMount(){
-      const apiSearch = this.userInput = this.$route.params.id;
-      fetch(`https://goweather.herokuapp.com/weather/${apiSearch}`).then(result => result.json())
-      .then(value => {
-        console.log(value)
-        this.description = value.description;
-        this.temperature = value.temperature;
-        this.forecast1 = value.forecast[0].temperature;
-        this.forecast2 = value.forecast[1].temperature;
-        this.forecast3 = value.forecast[2].temperature;
-      })
-      const date = new Date;
-      this.day = date.toLocaleDateString('en-US', { weekday: 'long' }) + ' ' +  date.getDate();   
+    created(){
+      this.fetchApi()
+      this.addDots()
+    },
+    watch:{
+      '$route.params.id':{
+        immediate: true,
+        handler(){
+          this.fetchApi()
+        }
+      }
+    },
+    methods:{
+      fetchApi(){
+        const apiSearch = this.userInput = this.$route.params.id;
+        this.loading = true;
+        setTimeout(() =>{
+          fetch(`https://goweather.herokuapp.com/weather/${apiSearch}`)
+          .then(result => result.json())
+          .then(value => {
+            if(this.description.length === 0){
+              return this.removeAnimation();
+            }
+            console.log(value)
+            this.description = value.description;
+            this.temperature = value.temperature;
+            this.forecast1 = value.forecast[0].temperature;
+            this.forecast2 = value.forecast[1].temperature;
+            this.forecast3 = value.forecast[2].temperature;
+            const date = new Date;
+            this.day = date.toLocaleDateString('en-US', { weekday: 'long' }) + ' ' +  date.getDate(); 
+            this.loading = false
+          }, 2000).catch(error => {
+            this.removeAnimation()
+            console.log('error', error)
+          })
+        })
+      },
+      addDots(){
+        this.intervalId = setInterval(() =>{
+          this.loadingtxt = this.loadingtxt + '.'
+          if(this.loadingtxt.length > 10){
+            this.loadingtxt = 'Loading'
+          }
+        },200)
+      },
+      removeAnimation(){
+        clearInterval(this.intervalId);
+        this.loadingtxt = 'Sorry :C we cant get the information at the moment, please try again later'
+      }
     } 
-  }
+}
 </script>
 <style lang="scss">
 @use '@/assets/global-mixins.scss';
+  .loading-page{
+    @include global-mixins.heightAndWidth(100%, 100%);
+    @include global-mixins.positionDisplay(center, column, center); 
+    position: absolute;
+    z-index: 1;
+  }
   .align-column{
     @include global-mixins.minMax(100%, 1400px, 100%, 900px, transparent);
     @include global-mixins.positionDisplay(center, column, center); 
@@ -84,7 +133,6 @@ import cityInput from '@/components/inputCity-component.vue';
     @include global-mixins.heightAndWidth(10%, 85%, transparent);
     position: relative;
     bottom: 0%
-
   }
   .weather-card{
     @include global-mixins.heightAndWidth(25%, 85%, #FF9F1C);
