@@ -2,7 +2,7 @@
   <main>
     <div class="loading-page" v-if="loading">
       <img class="image-size" alt="cloudy sun" src="@/assets/icons/cloudy.png">
-      <h3 class="h3-blue-styling">{{ loadingtxt }}</h3>
+      <h3 class="h3-blue-styling centertxt">{{ loadingtxt }}</h3>
     </div>
     <div class="align-column">
       <div class="about-input">
@@ -11,7 +11,6 @@
       <div class="weather-card">
         <div class="icon-description">
           <div class="sunny-icon"></div>
-          <h3 class="h3-white-styling">{{ $route.params.id }}</h3>
         </div>
         <div class="temp-and-wind">
           <h2 class="h2-white-styling"> {{ description }} {{ temperature }}</h2>
@@ -22,21 +21,21 @@
         <div class="grid-childs child1">
           <div class="sunny-icon"></div>
           <div class="mobile-forecast">
-            <h3 class="h3-white-styling">{{ day }}</h3>
+            <h3 class="h3-white-styling">{{ secday }}</h3>
             <h4 class="h4-white-styling"> {{ forecast1 }}</h4>
           </div>
         </div>
         <div class="grid-childs child2">
           <div class="sunny-icon"></div>
           <div class="mobile-forecast">
-            <h3 class="h3-white-styling">{{ day }}</h3>
+            <h3 class="h3-white-styling">{{ thirdday }}</h3>
             <h2 class="h4-white-styling"> {{ forecast2 }}</h2>
           </div>
         </div>
         <div class="grid-childs child3">
           <div class="sunny-icon"></div>
           <div class="mobile-forecast">
-            <h3 class="h3-white-styling">{{ day }}</h3>
+            <h3 class="h3-white-styling">{{ fourthday }}</h3>
             <h2 class="h4-white-styling"> {{ forecast3 }}</h2>
           </div>
         </div>
@@ -53,12 +52,15 @@ import cityInput from '@/components/inputCity-component.vue';
         userInput: "",
         description: "",
         day: "",
+        secday: "",
+        thirdday: "",
+        fourthday: "",
         temperature: "",
         wind: "",
         forecast1: "",
         forecast2: "",
         forecast3: "",
-        loading: true,
+        loading: false,
         loadingtxt: "Loading",
       }
     },
@@ -77,22 +79,24 @@ import cityInput from '@/components/inputCity-component.vue';
     methods:{
       fetchApi(){
         const apiSearch = this.userInput = this.$route.params.id;
-        this.loading = true;
+        this.loading = true
         setTimeout(() =>{
           fetch(`https://goweather.herokuapp.com/weather/${apiSearch}`)
           .then(result => result.json())
           .then(value => {
-            if(this.description.length === 0){
-              return this.removeAnimation();
-            }
-            console.log(value)
             this.description = value.description;
             this.temperature = value.temperature;
             this.forecast1 = value.forecast[0].temperature;
             this.forecast2 = value.forecast[1].temperature;
             this.forecast3 = value.forecast[2].temperature;
             const date = new Date;
-            this.day = date.toLocaleDateString('en-US', { weekday: 'long' }) + ' ' +  date.getDate(); 
+            const nextDate = new Date;
+            const secday = nextDate.setDate(date.getDate() + 1);
+            const thirdday = nextDate.setDate(date.getDate() + 2)
+
+            this.day = date.toLocaleDateString('en-US', { weekday: 'long' }) + ' ' +  date.getDate();
+            this.secday = secday.toLocaleString('en-US', {weekday: 'long'}) + ' ' + secday.getDate();
+            this.thirdday = thirdday.toLocaleString('en-US', {weekday: 'long'}) + ' '+ thirdday.getDate();
             this.loading = false
           }, 2000).catch(error => {
             this.removeAnimation()
@@ -171,6 +175,9 @@ import cityInput from '@/components/inputCity-component.vue';
     text-align: center;
     @include global-mixins.positionDisplay(space-evenly, column, center);
     gap: 3%;
+  }
+  .centertxt{
+    text-align: center;
   }
   @media screen and (max-width: 1023px) {
     .forecasts{
